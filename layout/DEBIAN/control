@@ -1,0 +1,8 @@
+Package: com.leeksov.executor
+Name: Executor for Roblox
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Roblox Luau script executor for iOS
+Maintainer: leeksov
+Author: leeksov

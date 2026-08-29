@@ -1,0 +1,18 @@
+# theos build output
+.theos/
+packages/
+obj/
+*.deb
+*.ipa
+
+# macOS
+.DS_Store
+
+# editor
+*.swp
+.vscode/
+.idea/
+
+# local reversing scratch (not needed to build)
+*.i64
+*.idb
