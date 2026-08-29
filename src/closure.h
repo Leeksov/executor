@@ -1,15 +1,9 @@
+#pragma once
 #include "lstate.h"
 #include "lapi.h"
 #include <unordered_map>
 
-std::unordered_map<Closure *, lua_CFunction> cclosure_map = { };
+extern std::unordered_map<Closure *, lua_CFunction> cclosure_map;
 
-int call_handler(lua_State *L) {
-    auto idx = cclosure_map.find(curr_func(L));
-    return idx != cclosure_map.end() ? idx->second(L) : 0;
-}
-
-void pushcclosure(lua_State *L, lua_CFunction fn, const char *debugname, int nups) {
-    lua_pushcclosurek(L, call_handler, debugname, nups, 0);
-    cclosure_map[clvalue(luaA_toobject(L, -1))] = fn;
-}
+int call_handler(lua_State *L);
+void pushcclosure(lua_State *L, lua_CFunction fn, const char *debugname, int nups);
