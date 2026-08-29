@@ -14,8 +14,8 @@
 
 #include "closure.h"
 #include "offsets.h"
+#include "exploit.h"
 
-extern lua_State *exploit_state;
 std::string compile_script(const std::string &source);
 
 // ------------------------------------------------------------------ workspace / filesystem
@@ -270,12 +270,18 @@ static int unc_compareinstances(lua_State *L) {
 }
 
 static int unc_setthreadidentity(lua_State *L) {
-    uintptr_t ud = (uintptr_t)L->userdata;
-    if (ud) *(uint64_t *)(ud + rbx::kCapabilities) = 0xFFFFFFFFFFFFFFFFull;
+    set_thread_identity(L, 0xFFFFFFFFFFFFFFFFull);
     return 0;
 }
 
-static int unc_getthreadidentity(lua_State *L) { lua_pushinteger(L, 8); return 1; }
+static int unc_getthreadidentity(lua_State *L) {
+    uintptr_t ud = (uintptr_t)L->userdata;
+    if (ud && *(uint64_t *)(ud + rbx::kCapabilities) == 0xFFFFFFFFFFFFFFFFull)
+        lua_pushinteger(L, 8);
+    else
+        lua_pushinteger(L, 0);
+    return 1;
+}
 
 static int unc_identifyexecutor(lua_State *L) {
     lua_pushstring(L, "leeksov");
